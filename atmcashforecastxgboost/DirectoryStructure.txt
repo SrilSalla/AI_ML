@@ -1,0 +1,22 @@
+atm_cash_forecaster/
+│
+├── main.py             # New unified entry point
+├── train_model.py      # Updated training script
+├── predict.py          # Updated prediction script
+│
+├── config.py           # Configuration (unchanged)
+├── requirements.txt    # Dependencies (unchanged)
+│
+├── utils/
+│   ├── data_generator.py
+│   ├── feature_engineer.py
+│   └── visualization.py
+│
+├── data/
+│   ├── synthetic_atm_data.csv
+│   └── forecasts/
+│       └── next_30_days.csv
+│
+└── models/
+    ├── xgboost_atm_model.pkl
+    └── preprocessor.pkl
