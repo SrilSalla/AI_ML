@@ -1,0 +1,10 @@
+bank_check_validator/
+│
+├── model/                      # Saved models
+│   ├── cnn_features.h5         # Pretrained CNN feature extractor
+│   └── xgboost_model.pkl       # Trained XGBoost classifier
+│
+├── check_validator.py          # Main validation class
+├── train_model.py              # Training script
+├── app.py                      # Streamlit interface
+└── requirements.txt            # Dependencies

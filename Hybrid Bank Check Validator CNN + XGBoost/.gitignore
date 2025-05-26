@@ -1,0 +1,71 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# VS Code settings
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Node modules (if any JS code)
+node_modules/
+
+# Sensitive files (example, do not commit real secrets)
+.env
+*.key
+*.pem
+
+# Large data or model files (add extensions as needed)
+*.h5
+*.ckpt
+*.pth
+*.pkl
+
+# Logs
+*.log
+
+# Other IDE/editor folders
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Mac system files
+*.DS_Store
+
+# Windows system files
+ehthumbs.db
+Desktop.ini
+
+# Test/coverage outputs
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.old
+*.orig
