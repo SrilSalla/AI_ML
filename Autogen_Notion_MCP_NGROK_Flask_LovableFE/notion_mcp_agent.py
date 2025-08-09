@@ -5,11 +5,15 @@ from autogen_ext.tools.mcp import StdioServerParams, mcp_server_tools
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.conditions import TextMentionTermination
 
+
 import os
+from dotenv import load_dotenv
 
-OPENAI_API_KEY = ""
+# Load environment variables from .env file
+load_dotenv()
 
-NOTION_API_KEY = ""
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+NOTION_API_KEY = os.getenv("NOTION_API_KEY")
 
 SYSTEM_MESSAGE = "You are a helpful assistant that can search and summarize content from the user's Notion workspace and also list what is asked.Try to assume the tool and call the same and get the answer. Say TERMINATE when you are done with the task."
 
