@@ -7,9 +7,9 @@ from autogen_agentchat.conditions import TextMentionTermination
 
 import os
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = ""
 
-NOTION_API_KEY = "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"
+NOTION_API_KEY = ""
 
 SYSTEM_MESSAGE = "You are a helpful assistant that can search and summarize content from the user's Notion workspace and also list what is asked.Try to assume the tool and call the same and get the answer. Say TERMINATE when you are done with the task."
 
