@@ -1,0 +1,10 @@
+autogen-core
+autogen-agentchat
+autogen-ext 
+openai==1.66.2
+pydantic 
+typing_extensions
+mcp
+flask
+pyngrok
+flask_cors

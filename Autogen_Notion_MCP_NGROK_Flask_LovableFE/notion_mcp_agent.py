@@ -15,22 +15,22 @@ SYSTEM_MESSAGE = "You are a helpful assistant that can search and summarize cont
 
 async def config():
     params = StdioServerParams(
-        command='npx',
-        args = ['-y', 'mcp-remote', 'https://mcp.notion.com/mcp'],
+        command="npx.cmd",
+        args=['-y', 'mcp-remote', 'https://mcp.notion.com/mcp'],
         env={
-            'NOTION_API_KEY': NOTION_API_KEY,
+            'NOTION_API_KEY': NOTION_API_KEY
         },
-        read_timeout=20
+        read_timeout_seconds=20
     )
 
     model = OpenAIChatCompletionClient(
-        model="04-mini",
+        model="o4-mini",
         api_key=OPENAI_API_KEY,
     )
 
-    mcp_tools= await mcp_server_tools(server_params=params)
+    mcp_tools = await mcp_server_tools(server_params=params)
 
-    agent= AssistantAgent(
+    agent = AssistantAgent(
         name='notion_agent',
         system_message=SYSTEM_MESSAGE,
         model_client=model,
@@ -41,7 +41,7 @@ async def config():
     team = RoundRobinGroupChat(
         participants=[agent],
         max_turns=5,
-        termination_condition=TextMentionTermination(mention="TERMINATE"),
+        termination_condition=TextMentionTermination('TERMINATE')
     )
 
     return team
@@ -52,8 +52,9 @@ async def orchestrate(team,task):
         
 async def main():
     team = await config()
-    task='Create a new page titled "PageFromMCINotion"'
+    task = 'Create a new page titled "PageFromMCINotion" under parent page with ID "24962cf8359e8059892de4f4e902a6ad"'
 
+    
     async for msg in orchestrate(team=team, task=task):
         print('-'*100)
         print(msg)
