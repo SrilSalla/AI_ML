@@ -1,0 +1,11 @@
+https://5b6f09e31949.ngrok-free.app
+
+# curl -X POST http://localhost:7001/run \
+#   -H "Content-Type: application/json" \
+#   -d '{"task": "create a page 'HelloFromLove' "}'
+
+Can you create a solid quick Front end in which we are having a chatbot to connect to my notion page, further also fields and buton to test out my end points on above give url of ngrok 
+
+/health
+/
+/run(I have given you the curl for this which I could be able to edit.
