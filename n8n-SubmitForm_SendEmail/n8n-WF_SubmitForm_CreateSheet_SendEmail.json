@@ -1,0 +1,215 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Sri's Registration Form",
+        "formDescription": "Sri's Registration Form for AI Submit",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Service",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Consultation"
+                  },
+                  {
+                    "option": "Training"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "example@gmail.com",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Register Now"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        -16
+      ],
+      "id": "6539764a-3bd8-41d1-a8f5-e751a9455d8c",
+      "name": "On form submission",
+      "webhookId": "1a0f2f28-f628-4124-857c-56acf36a4e26",
+      "notesInFlow": true,
+      "notes": "My First Form"
+    },
+    {
+      "parameters": {
+        "content": "# Automation 1\n## Create Google Sheets and send Email",
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "2c67baa2-03da-42bc-b74e-edb46be9b207",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16riWmC57bD3WyP-ilD8jjg6ua2qM5hLjOCTkRDmo7Vs",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16riWmC57bD3WyP-ilD8jjg6ua2qM5hLjOCTkRDmo7Vs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16riWmC57bD3WyP-ilD8jjg6ua2qM5hLjOCTkRDmo7Vs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Service": "={{ $json.Service }}",
+            "Email": "={{ $json.Email }}",
+            "Time": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -144,
+        -16
+      ],
+      "id": "4f9b0339-d694-469f-8867-e99d1731e8f8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lR8Ex7Y4MQKOZ74U",
+          "name": "Google Sheets account"
+        }
+      },
+      "notes": "My First Sheet"
+    },
+    {
+      "parameters": {
+        "sendTo": "srila.salla@gmail.com",
+        "subject": "Congratulations registered for Summit!!",
+        "message": "=Hello from n8n {{ $json.Name }}\n\nThere is a new lead in the form\nName:{{ $json.Name }}\nService:{{ $json.Service }}\nTime:{{ $json.Time }}\nWorkflowId:{{ $workflow.id }}",
+        "options": {
+          "senderName": "Srilakshmidaran"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "1c4aee4c-f49f-469e-b9d2-31b17f859a6b",
+      "name": "Send a message",
+      "webhookId": "185fc71f-c807-46d9-bc36-4af2395611cb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "waR8wqvfGbo8EAqz",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6c853a9b-7f22-4264-8cb7-cbbad01e2476",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bda6b1e0bd19b790d6f62eea5a5bc63d6a8194a8d52245c7b62df327d80ff0a0"
+  },
+  "id": "dVSKzPVjp6OFKham",
+  "tags": []
+}

@@ -1,0 +1,361 @@
+{
+  "name": "RealEstate",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Automation 2\n\n### Potential Real Estate Customers\n### Predict RealEstate customers Gender, Age, Nationality using HTTP request from the customers excel sheet and update these info\n",
+        "height": 192,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -736,
+        -544
+      ],
+      "typeVersion": 1,
+      "id": "ae642deb-5480-4355-bc40-0ca7d33ad4bc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        -272
+      ],
+      "id": "dc7c8dfa-d6e5-4567-8cfa-fd3b968d92ae",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Xeb6Jl7_pSHnMZPgQpaTkJdcdUi-8-OX89JArYFsUmw",
+          "mode": "list",
+          "cachedResultName": "Potential_Customers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xeb6Jl7_pSHnMZPgQpaTkJdcdUi-8-OX89JArYFsUmw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xeb6Jl7_pSHnMZPgQpaTkJdcdUi-8-OX89JArYFsUmw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -224,
+        -272
+      ],
+      "id": "ad4c8995-0c12-420a-9cd7-1794bad00c43",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oisX29h3qcvaodZb",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.genderize.io",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.Name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -16,
+        -272
+      ],
+      "id": "f8a10371-77b3-44f0-85be-e63fcc9bacd6",
+      "name": "Gender HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://api.nationalize.io",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.gender }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        -272
+      ],
+      "id": "1e22d98d-db01-45eb-8b1f-f4e1d5aa04e5",
+      "name": "Nationality HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://api.agify.io",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $('Get row(s) in sheet').item.json.Name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -112,
+        16
+      ],
+      "id": "dbbcd70e-2b46-41d1-a272-d77add62ff88",
+      "name": "Age  HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Xeb6Jl7_pSHnMZPgQpaTkJdcdUi-8-OX89JArYFsUmw",
+          "mode": "list",
+          "cachedResultName": "Potential_Customers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xeb6Jl7_pSHnMZPgQpaTkJdcdUi-8-OX89JArYFsUmw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xeb6Jl7_pSHnMZPgQpaTkJdcdUi-8-OX89JArYFsUmw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Get row(s) in sheet').item.json.ID }}",
+            "Name": "={{ $('Get row(s) in sheet').item.json.Name }}",
+            "Number": "={{ $('Get row(s) in sheet').item.json.Number }}",
+            "Budget": "={{ $('Get row(s) in sheet').item.json.Budget }}",
+            "Gender": "={{ $('Gender HTTP Request').item.json.gender }}",
+            "Age": "={{ $json.age }}",
+            "Nationality": "={{ $('Nationality HTTP Request').item.json.country[0].country_id }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Number",
+              "displayName": "Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nationality",
+              "displayName": "Nationality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        144,
+        16
+      ],
+      "id": "b6ee680f-ec16-4fa3-bc26-ca7910343075",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oisX29h3qcvaodZb",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "srila.salla@gmail.com",
+        "subject": "New Client",
+        "message": "=Hello, \n\nA new client {{ $json.Name }} has signed up, below are the details.\n\nNumber: {{ $json.Number }}\nBudget: {{ $json.Budget }}\n\n\nBelow is expected gender, age and nationality\n\nGender: {{ $json.Gender }}\nAge: {{ $json.Age }}\nNationality: {{ $json.Nationality }}\n\nThanks for the workflow.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        384,
+        16
+      ],
+      "id": "41e8f881-3316-4e8a-b8ce-7d4e11ccd393",
+      "name": "Send a message",
+      "webhookId": "8d020b77-aab4-47de-8ba3-5f9b8872c715",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "waR8wqvfGbo8EAqz",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Gender HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gender HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Nationality HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nationality HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Age  HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Age  HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6769200d-70d4-4bb7-9fc4-ba099a7c8b89",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bda6b1e0bd19b790d6f62eea5a5bc63d6a8194a8d52245c7b62df327d80ff0a0"
+  },
+  "id": "uQAxuNLtAqN3xTrL",
+  "tags": [
+    {
+      "name": "RealEstate",
+      "id": "n6HfI9eIGT0wQw84",
+      "createdAt": "2025-08-10T16:45:43.465Z",
+      "updatedAt": "2025-08-10T16:45:43.465Z"
+    }
+  ]
+}
